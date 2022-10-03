@@ -17,6 +17,7 @@ class ViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     
     private let service: Service
+    private var ids: [String] = []
     private var cancellables = Set<AnyCancellable>()
     
     init(service: Service) {
@@ -46,15 +47,14 @@ class ViewModel: ObservableObject {
                 //self.checkMeme(meme: response)
                
                 if self.memes.count < 15 {
-                    self.memes.append(response)
-//                    ForEach(memes, id: \.self) { m in
-//
-//                    }
-//                    for item in self.memes {
-//                        if item.id != response.id {
-//                            
-//                        }
-//                    }
+                        
+                        if !self.memes.contains(where: { m in
+                            m.id == response.id
+                        }) {
+                            self.memes.append(response)
+                            self.ids.append(response.id)
+                            print(self.ids)
+                        }
                 }
                 print(response)
                 //self.users = response
