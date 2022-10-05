@@ -15,13 +15,20 @@ class ViewModel: ObservableObject {
     //MARK: - Properties
     @Published var memes = [Meme]()
     @Published var isLoading: Bool = false
-    
+    @Published var full: Bool = false
+
     private let service: Service
-    private var ids: [String] = []
+    private var ids = Set<String>()
     private var cancellables = Set<AnyCancellable>()
     
     init(service: Service) {
         self.service = service
+        for _ in 0...14 {
+            getMeme()
+            //if memes.count == 15 {
+            //}
+        }
+        
     }
 
     //MARK: - Functions
@@ -45,30 +52,18 @@ class ViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 //self.checkMeme(meme: response)
-               
-                if self.memes.count < 15 {
-                        
-                        if !self.memes.contains(where: { m in
-                            m.id == response.id
-                        }) {
-                            self.memes.append(response)
-                            self.ids.append(response.id)
-                            print(self.ids)
-                        }
-                }
+                self.memes.append(response)
+                self.ids.insert(response.id)
+                print(self.ids)
                 print(response)
                 //self.users = response
                 //print(response)
             }
         self.cancellables.insert(cancellable)
        // isRefreshing = false
-
-    }
-    
-    func checkMeme(meme: Meme) {
-        
-       
-        
+        if memes.count >= 15 {
+            self.full = true
+        }
     }
     
 }

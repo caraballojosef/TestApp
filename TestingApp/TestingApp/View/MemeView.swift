@@ -15,16 +15,22 @@ struct MemeView: View {
         
         VStack(spacing: 10) {
             Text("Meme: \(meme.value)")
-                .font(.system(.title, design: .rounded))
+                .font(.system(.body, design: .rounded))
                 .fontWeight(.bold)
                 .padding(.horizontal)
+                .padding(.vertical, 10)
             Divider()
             AsyncImage(url: URL(string: meme.iconURL)) { image in
                 image.resizable()
             } placeholder: {
                 Text("Image")
             }
+            .padding(.bottom, 15)
         }
+        .background(Color.cyan.opacity(0.3))
+        .cornerRadius(10)
+        .padding()
+        
     }
 }
 

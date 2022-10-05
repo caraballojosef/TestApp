@@ -17,25 +17,26 @@ struct ContentView: View {
     
     var body: some View {
         
-        VStack(alignment: .center, spacing: 10) {
-            List {
-                ForEach(vm.memes, id: \.id) { item in
-                    MemeView(meme: item)
-                }.listRowSeparator(.hidden)
+        NavigationView {
+            VStack(alignment: .center, spacing: 10) {
+                List {
+                    ForEach(vm.memes, id: \.id) { item in
+                        MemeView(meme: item)
+                    }.listRowSeparator(.hidden)
+                }
+                //.background(.clear)
+                .scrollContentBackground(.hidden)
+                Button {
+                    vm.getMeme()
+                } label: {
+                    Text("Reload")
+                }
+                .disabled(vm.memes.count >= 15)
             }
-            Button {
-                vm.getMeme()
-            } label: {
-                Text("Reload")
-            }
+            .padding()
+            .navigationTitle("\(vm.memes.count) Memes")
         }
-        .padding()
-        .onAppear {
-            for _ in 0...15 {
-                vm.getMeme()
-            }
-            
-        }
+       
     }
 }
 
